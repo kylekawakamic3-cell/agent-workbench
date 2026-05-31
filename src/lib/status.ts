@@ -14,7 +14,7 @@ export const STATUS_STYLE: Record<
   draft: {
     bg: "bg-bg-warning-weak",
     fg: "text-fg-warning-strong",
-    icon: "fa-solid fa-pen-line",
+    icon: "fa-solid fa-pen",
   },
   template: {
     bg: "bg-bg-warning-weak",

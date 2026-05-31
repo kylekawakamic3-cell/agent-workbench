@@ -48,7 +48,7 @@ export function Header({
             <span
               className={`inline-flex shrink-0 items-center gap-1.5 px-2 h-[22px] rounded-sm ${s.bg} ${s.fg}`}
             >
-              <i className={`${s.icon} text-[11px]`} />
+              <i className={`${s.icon} text-[10px] leading-none`} />
               <span className="text-label-sm font-medium leading-none">
                 {STATUS_LABEL[status]}
               </span>

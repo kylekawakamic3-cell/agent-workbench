@@ -200,10 +200,10 @@ export function ConfigPanel({
               {state.tools.map((t) => (
                 <li
                   key={t.name}
-                  className="flex items-start gap-2 p-2 rounded-lg bg-bg-secondary hover:bg-bg-action-hover"
+                  className="flex items-center gap-2.5 p-2 rounded-md bg-bg-secondary hover:bg-bg-tertiary transition-colors"
                 >
-                  <span className="w-6 h-6 flex items-center justify-center shrink-0">
-                    <i className={`${t.icon} text-fg-primary text-[14px]`} />
+                  <span className="w-7 h-7 flex items-center justify-center shrink-0 rounded-md bg-bg-card-parent border border-border-weak">
+                    <i className={`${t.icon} text-fg-primary text-[13px]`} />
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="text-label-sm font-medium text-fg-primary truncate">

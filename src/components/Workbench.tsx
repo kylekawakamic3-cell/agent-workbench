@@ -36,7 +36,7 @@ export function Workbench({
         primary={primary}
         showEditTitle={showEditTitle}
       />
-      <main className="flex-1 flex gap-4 p-4 overflow-hidden min-h-0">
+      <main className="flex-1 flex gap-2 p-4 overflow-hidden min-h-0">
         {children}
       </main>
       {modal}

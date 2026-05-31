@@ -232,7 +232,7 @@ function detailRows(node?: RunNode, modelId = "gpt-5") {
       { name: "tool.status", value: "ok" },
     ];
   return [
-    { name: "execustion.status", value: "completed" },
+    { name: "execution.status", value: "completed" },
     { name: "context", value: "Text" },
     { name: "session.id", value: "session-4603" },
   ];
