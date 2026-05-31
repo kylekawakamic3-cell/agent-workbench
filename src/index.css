@@ -32,6 +32,15 @@ body {
   background: transparent;
 }
 
+/* Fully hide the scrollbar while keeping scroll behavior */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Slider track */
 input[type="range"].fig-slider {
   -webkit-appearance: none;

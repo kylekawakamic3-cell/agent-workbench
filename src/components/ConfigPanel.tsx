@@ -193,11 +193,11 @@ export function ConfigPanel({
             Tools are actions or functions your agent can use to perform its tasks. Choose tools that match the agent's responsibilities and goals.
           </p>
           {state.tools.length > 0 && (
-            <ul className="mt-3 flex flex-col gap-1">
+            <ul className="mt-3 flex flex-col gap-2">
               {state.tools.map((t) => (
                 <li
                   key={t.name}
-                  className="flex items-start gap-2 py-2 px-1 rounded-sm hover:bg-bg-action-hover"
+                  className="flex items-start gap-2 p-2 rounded-lg bg-bg-secondary hover:bg-bg-action-hover"
                 >
                   <span className="w-6 h-6 flex items-center justify-center shrink-0">
                     <i className={`${t.icon} text-fg-primary text-[14px]`} />

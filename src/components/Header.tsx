@@ -64,7 +64,7 @@ export function Header({
       <div className="flex items-center gap-3 shrink-0">
         {showDocumentation && (
           <button className="flex items-center gap-1.5 px-2 h-8 text-fg-primary hover:bg-bg-action-hover rounded-sm">
-            <i className="fa-regular fa-book text-[13px]" />
+            <i className="fa-solid fa-book text-[13px]" />
             <span className="text-btn-md">Documentation</span>
           </button>
         )}

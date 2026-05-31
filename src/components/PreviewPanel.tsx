@@ -123,7 +123,7 @@ function Composer({
           }
         }}
         placeholder="Message goes here..."
-        className="flex-1 resize-none py-1.5 px-3 max-h-[140px] leading-snug text-input-md text-fg-primary bg-bg-card-parent placeholder:text-fg-tertiary scrollbar-thin"
+        className="flex-1 resize-none py-1.5 px-3 max-h-[140px] leading-snug text-input-md text-fg-primary bg-bg-card-parent placeholder:text-fg-tertiary no-scrollbar"
       />
       <button
         onClick={onSend}

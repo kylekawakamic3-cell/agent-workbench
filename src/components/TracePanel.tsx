@@ -199,7 +199,7 @@ export function TracePanel({
                 </span>
               </div>
               <ul className="flex flex-col">
-                {detailRows(selectedNode).map((s, i) => (
+                {detailRows(selectedNode, state.modelId).map((s, i) => (
                   <li
                     key={i}
                     className="flex items-center justify-between py-2 border-t border-divider-weak text-body-sm text-fg-primary first:border-t-0"
@@ -217,11 +217,11 @@ export function TracePanel({
   );
 }
 
-function detailRows(node?: RunNode) {
+function detailRows(node?: RunNode, modelId = "gpt-5") {
   if (!node) return [];
   if (node.kind === "llm")
     return [
-      { name: "model", value: "gpt-4o" },
+      { name: "model", value: modelId },
       { name: "tokens.input", value: "412" },
       { name: "tokens.output", value: "400" },
     ];

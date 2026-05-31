@@ -24,24 +24,24 @@ export const DEFAULT_TOOLS: Tool[] = [
     icon: "fa-regular fa-building",
     name: "get_events_for_turbine",
     description:
-      "Retrieves events associated with a specific wind turbine (e.g., maintenance logs, sensor alert...",
+      "Retrieves events for a specific wind turbine — maintenance logs, sensor alerts, and inspection records.",
   },
   {
     icon: "fa-solid fa-wave-square",
     name: "turbine_vibration_anomaly_detection",
     description:
-      "Retrieves events associated with a specific wind turbine (e.g., maintenance logs, sensor alert...",
+      "Analyzes vibration sensor data for a turbine and flags anomalies with severity scores and affected components.",
   },
   {
     icon: "fa-solid fa-magnifying-glass",
     name: "semantic_search",
     description:
-      "Retrieves events associated with a specific wind turbine (e.g., maintenance logs, sensor alert...",
+      "Searches the maintenance knowledge base and historical reports using natural-language queries.",
   },
 ];
 
 const DEFAULT_PROMPT =
-  "Develop, refactor, and debug high-quality code across multiple languages and frameworks to accelerate software development, minimize manual errors, and enhance developer productivity through clear, efficient, and maintainable solutions.";
+  "You are a wind farm operations assistant. Help engineers monitor turbine health, investigate vibration and sensor anomalies, and prioritize maintenance. Use the available tools to pull turbine event history, run vibration anomaly detection, and search maintenance records. Always cite specific turbines, dates, and severity, and recommend a clear next action.";
 
 export type ModelProvider = "openai" | "anthropic";
 
@@ -51,9 +51,9 @@ export const MODELS: {
   provider: ModelProvider;
   bg: string;
 }[] = [
-  { id: "gpt-4o", label: "GPT-4o", provider: "openai", bg: "#111112" },
-  { id: "gpt-4o-mini", label: "GPT-4o mini", provider: "openai", bg: "#111112" },
-  { id: "claude-opus-4-7", label: "Claude Opus 4.7", provider: "anthropic", bg: "#d97757" },
+  { id: "gpt-5", label: "GPT-5", provider: "openai", bg: "#111112" },
+  { id: "gpt-5-mini", label: "GPT-5 mini", provider: "openai", bg: "#111112" },
+  { id: "claude-opus-4-8", label: "Claude Opus 4.8", provider: "anthropic", bg: "#d97757" },
   { id: "claude-sonnet-4-6", label: "Claude Sonnet 4.6", provider: "anthropic", bg: "#d97757" },
   { id: "claude-haiku-4-5", label: "Claude Haiku 4.5", provider: "anthropic", bg: "#d97757" },
 ];
@@ -90,7 +90,7 @@ export type PanelId = "config" | "preview" | "trace";
 
 export function useWorkbenchState() {
   const [prompt, setPrompt] = useState(DEFAULT_PROMPT);
-  const [modelId, setModelId] = useState("gpt-4o");
+  const [modelId, setModelId] = useState("gpt-5");
   const [temperature, setTemperature] = useState(0.5);
   const [maxTokens, setMaxTokens] = useState(1000);
   const [memoryOn, setMemoryOn] = useState(false);
