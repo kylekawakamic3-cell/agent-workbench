@@ -229,11 +229,16 @@ export function useWorkbenchState() {
     setTools((t) => (t.some((x) => x.name === tool.name) ? t : [...t, tool]));
   }, []);
 
+  const dismissToast = useCallback(() => {
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    setToast(null);
+  }, []);
+
   const saveConfig = useCallback(() => {
     setLastSaved(clockTime());
     setToast("Configuration saved");
     if (toastTimer.current) clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToast(null), 2600);
+    toastTimer.current = setTimeout(() => setToast(null), 3200);
   }, []);
 
   return {
@@ -265,6 +270,7 @@ export function useWorkbenchState() {
     lastSaved,
     saveConfig,
     toast,
+    dismissToast,
   };
 }
 
