@@ -235,10 +235,9 @@ function Feedback() {
 
 function TypingIndicator() {
   return (
-    <div className="flex items-center gap-1.5 text-fg-secondary">
-      <span className="w-1.5 h-1.5 bg-fg-secondary rounded-full animate-pulse" />
-      <span className="w-1.5 h-1.5 bg-fg-secondary rounded-full animate-pulse [animation-delay:120ms]" />
-      <span className="w-1.5 h-1.5 bg-fg-secondary rounded-full animate-pulse [animation-delay:240ms]" />
+    <div className="flex items-center gap-2 text-fg-secondary">
+      <i className="fa-solid fa-spinner animate-spin text-[13px]" />
+      <span className="text-body-sm">Thinking...</span>
     </div>
   );
 }
