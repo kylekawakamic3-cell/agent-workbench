@@ -43,7 +43,7 @@ export const DEFAULT_TOOLS: Tool[] = [
 const DEFAULT_PROMPT =
   "You are a wind farm operations assistant. Help engineers monitor turbine health, investigate vibration and sensor anomalies, and prioritize maintenance. Use the available tools to pull turbine event history, run vibration anomaly detection, and search maintenance records. Always cite specific turbines, dates, and severity, and recommend a clear next action.";
 
-export type ModelProvider = "openai" | "anthropic";
+export type ModelProvider = "openai" | "anthropic" | "google";
 
 export const MODELS: {
   id: string;
@@ -56,6 +56,8 @@ export const MODELS: {
   { id: "claude-opus-4-8", label: "Claude Opus 4.8", provider: "anthropic", bg: "#d97757" },
   { id: "claude-sonnet-4-6", label: "Claude Sonnet 4.6", provider: "anthropic", bg: "#d97757" },
   { id: "claude-haiku-4-5", label: "Claude Haiku 4.5", provider: "anthropic", bg: "#d97757" },
+  { id: "gemini-2-5-pro", label: "Gemini 2.5 Pro", provider: "google", bg: "#1a73e8" },
+  { id: "gemini-2-5-flash", label: "Gemini 2.5 Flash", provider: "google", bg: "#1a73e8" },
 ];
 
 // --- Scripted demo content (for screen recording) ---
@@ -86,6 +88,15 @@ function uid() {
   return Math.random().toString(36).slice(2, 9);
 }
 
+function clockTime() {
+  const d = new Date();
+  let h = d.getHours();
+  const ap = h >= 12 ? "pm" : "am";
+  h = h % 12 || 12;
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(h)}:${pad(d.getMinutes())}:${pad(d.getSeconds())}${ap}`;
+}
+
 export type PanelId = "config" | "preview" | "trace";
 
 export function useWorkbenchState() {
@@ -95,6 +106,9 @@ export function useWorkbenchState() {
   const [maxTokens, setMaxTokens] = useState(1000);
   const [memoryOn, setMemoryOn] = useState(false);
   const [tools, setTools] = useState<Tool[]>(DEFAULT_TOOLS);
+  const [lastSaved, setLastSaved] = useState("01:21:55pm");
+  const [toast, setToast] = useState<string | null>(null);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [composer, setComposer] = useState("");
   const [sending, setSending] = useState(false);
@@ -215,6 +229,13 @@ export function useWorkbenchState() {
     setTools((t) => (t.some((x) => x.name === tool.name) ? t : [...t, tool]));
   }, []);
 
+  const saveConfig = useCallback(() => {
+    setLastSaved(clockTime());
+    setToast("Configuration saved");
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(null), 2600);
+  }, []);
+
   return {
     prompt,
     setPrompt,
@@ -241,6 +262,9 @@ export function useWorkbenchState() {
     traceRevealed,
     revealTrace,
     runDemo,
+    lastSaved,
+    saveConfig,
+    toast,
   };
 }
 
