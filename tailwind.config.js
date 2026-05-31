@@ -30,6 +30,7 @@ export default {
         "bg-warning": "#f2950a",
         "bg-warning-weak": "#fde8c6",
         "bg-action-hover": "rgba(17, 17, 18, 0.04)",
+        "bg-action-hover-subtle": "rgba(17, 17, 18, 0.02)",
         "bg-track": "rgba(17, 17, 18, 0.10)",
         "bg-seg-selected": "rgba(17, 17, 18, 0.10)",
         "bg-deco-slate-strong": "#dde0eb",
