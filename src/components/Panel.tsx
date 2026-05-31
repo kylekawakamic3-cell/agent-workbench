@@ -87,7 +87,7 @@ export function PanelRail({ icon, label, side = "left", onClick }: PanelRailProp
   return (
     <button
       onClick={onClick}
-      className="flex flex-col items-center gap-3 py-4 px-2 bg-bg-card-parent rounded-md shadow-elev01 h-full w-8 shrink-0 hover:bg-bg-action-hover-subtle"
+      className="flex flex-col items-center gap-3 py-4 px-2 bg-bg-card-parent rounded-md shadow-elev01 h-full w-8 shrink-0 hover:bg-bg-secondary"
     >
       <i className={`${icon} text-[14px] text-fg-primary`} />
       <span
