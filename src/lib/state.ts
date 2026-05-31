@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import type { ReactNode } from "react";
 
 export interface Tool {
@@ -16,6 +16,7 @@ export interface ChatMessage {
   body?: ReactNode;
   sources?: string[];
   feedback?: boolean;
+  showTrace?: boolean;
 }
 
 export const DEFAULT_TOOLS: Tool[] = [
@@ -50,6 +51,21 @@ export const MODELS = [
   { id: "claude-haiku-4-5", label: "Claude Haiku 4.5", initial: "C", bg: "#d97757" },
 ];
 
+// --- Scripted demo content (for screen recording) ---
+const DEMO_MESSAGE =
+  "Which turbines at the North Ridge site reported vibration anomalies in the last 7 days?";
+
+const DEMO_REPLY =
+  "Three turbines at North Ridge flagged vibration anomalies in the last 7 days:\n\n" +
+  "•  Turbine 07 — gearbox vibration 4.2σ above baseline (May 26)\n" +
+  "•  Turbine 12 — drivetrain resonance, intermittent (May 28)\n" +
+  "•  Turbine 19 — blade-pass frequency spike (May 29)\n\n" +
+  "Turbine 07 is the most urgent: its anomaly score has trended upward for three " +
+  "consecutive days. I'd recommend scheduling an inspection before the next " +
+  "high-wind window.";
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
 function timeStamp() {
   const d = new Date();
   let h = d.getHours();
@@ -75,14 +91,74 @@ export function useWorkbenchState() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [composer, setComposer] = useState("");
   const [sending, setSending] = useState(false);
+  const [traceRevealed, setTraceRevealed] = useState(false);
   const [collapsed, setCollapsed] = useState<Record<PanelId, boolean>>({
     config: false,
     preview: false,
     trace: false,
   });
+  const demoRunning = useRef(false);
 
   const togglePanel = useCallback((id: PanelId) => {
     setCollapsed((c) => ({ ...c, [id]: !c[id] }));
+  }, []);
+
+  const revealTrace = useCallback(() => {
+    setTraceRevealed(true);
+    setCollapsed((c) => ({ ...c, trace: false }));
+  }, []);
+
+  // Scripted demo for screen recording: types a message, sends it,
+  // shows the agent "thinking", then drops in the reply. The trace stays
+  // idle until the user clicks "View trace" under the agent bubble.
+  const runDemo = useCallback(async () => {
+    if (demoRunning.current) return;
+    demoRunning.current = true;
+
+    setMessages([]);
+    setTraceRevealed(false);
+    setComposer("");
+    await sleep(450);
+
+    // Animate typing into the composer
+    for (let i = 1; i <= DEMO_MESSAGE.length; i++) {
+      setComposer(DEMO_MESSAGE.slice(0, i));
+      await sleep(18 + Math.random() * 45);
+    }
+    await sleep(550);
+
+    // Send the message
+    setMessages([
+      {
+        id: uid(),
+        role: "user",
+        sender: "You",
+        time: timeStamp(),
+        text: DEMO_MESSAGE,
+      },
+    ]);
+    setComposer("");
+    setSending(true);
+
+    // Agent thinking
+    await sleep(2200);
+
+    // Agent reply
+    setSending(false);
+    setMessages((m) => [
+      ...m,
+      {
+        id: uid(),
+        role: "assistant",
+        sender: "Agent",
+        time: timeStamp(),
+        text: DEMO_REPLY,
+        feedback: true,
+        showTrace: true,
+      },
+    ]);
+
+    demoRunning.current = false;
   }, []);
 
   const removeTool = useCallback((name: string) => {
@@ -113,13 +189,20 @@ export function useWorkbenchState() {
           time: timeStamp(),
           text: reply,
           feedback: true,
+          showTrace: true,
         },
       ]);
       setSending(false);
     }, 900);
   }, [composer, sending, prompt]);
 
-  const clearChat = useCallback(() => setMessages([]), []);
+  const clearChat = useCallback(() => {
+    demoRunning.current = false;
+    setMessages([]);
+    setComposer("");
+    setSending(false);
+    setTraceRevealed(false);
+  }, []);
 
   const addTool = useCallback((tool: Tool) => {
     setTools((t) => (t.some((x) => x.name === tool.name) ? t : [...t, tool]));
@@ -148,6 +231,9 @@ export function useWorkbenchState() {
     clearChat,
     collapsed,
     togglePanel,
+    traceRevealed,
+    revealTrace,
+    runDemo,
   };
 }
 

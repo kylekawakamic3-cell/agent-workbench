@@ -36,7 +36,7 @@ export function TracePanel({
 }: TracePanelProps) {
   const userMsgs = state.messages.filter((m) => m.role === "user");
   const latestUser = userMsgs[userMsgs.length - 1];
-  const hasData = !!latestUser && !state.sending;
+  const hasData = state.traceRevealed && !!latestUser;
 
   const tree: RunNode[] = hasData
     ? [
@@ -140,7 +140,7 @@ export function TracePanel({
           </div>
         </>
       ) : (
-        <>
+        <div className="animate-trace-in">
           <div className="px-4 pb-4">
             <h3 className="text-label-md font-medium text-fg-primary mb-2">
               Run Tree
@@ -211,7 +211,7 @@ export function TracePanel({
               </ul>
             </div>
           </div>
-        </>
+        </div>
       )}
     </Panel>
   );

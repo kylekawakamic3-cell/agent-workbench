@@ -55,6 +55,11 @@ export function PreviewPanel({
           value={state.composer}
           onChange={state.setComposer}
           onSend={state.sendMessage}
+          onActivate={
+            state.messages.length === 0 && !state.sending && !state.composer
+              ? state.runDemo
+              : undefined
+          }
           sending={state.sending}
         />
       }
@@ -65,7 +70,12 @@ export function PreviewPanel({
         ) : (
           <div className="px-4 py-4 flex flex-col gap-4">
             {state.messages.map((m) => (
-              <ChatBubble key={m.id} msg={m} />
+              <ChatBubble
+                key={m.id}
+                msg={m}
+                onViewTrace={state.revealTrace}
+                traceRevealed={state.traceRevealed}
+              />
             ))}
             {state.sending && <TypingIndicator />}
           </div>
@@ -79,11 +89,13 @@ function Composer({
   value,
   onChange,
   onSend,
+  onActivate,
   sending,
 }: {
   value: string;
   onChange: (v: string) => void;
   onSend: () => void;
+  onActivate?: () => void;
   sending: boolean;
 }) {
   return (
@@ -91,6 +103,7 @@ function Composer({
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onFocus={() => onActivate?.()}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -121,7 +134,15 @@ function Composer({
   );
 }
 
-function ChatBubble({ msg }: { msg: ChatMessage }) {
+function ChatBubble({
+  msg,
+  onViewTrace,
+  traceRevealed,
+}: {
+  msg: ChatMessage;
+  onViewTrace?: () => void;
+  traceRevealed?: boolean;
+}) {
   if (msg.role === "user") {
     return (
       <div className="rounded-md bg-bg-core-accent px-3 py-2 self-end max-w-[88%]">
@@ -168,6 +189,21 @@ function ChatBubble({ msg }: { msg: ChatMessage }) {
         {msg.text}
         {msg.body}
       </div>
+      {msg.showTrace && (
+        <button
+          onClick={onViewTrace}
+          className={`mt-2.5 self-start inline-flex items-center gap-1.5 h-7 px-2 rounded-sm border transition-colors ${
+            traceRevealed
+              ? "border-border-weak text-fg-secondary"
+              : "border-border-weak text-fg-secondary hover:text-fg-primary hover:bg-bg-action-hover"
+          }`}
+        >
+          <i className="fa-solid fa-bars-staggered text-[11px]" />
+          <span className="text-btn-sm font-medium">
+            {traceRevealed ? "Trace shown" : "View trace"}
+          </span>
+        </button>
+      )}
     </div>
   );
 }
