@@ -43,12 +43,19 @@ export const DEFAULT_TOOLS: Tool[] = [
 const DEFAULT_PROMPT =
   "Develop, refactor, and debug high-quality code across multiple languages and frameworks to accelerate software development, minimize manual errors, and enhance developer productivity through clear, efficient, and maintainable solutions.";
 
-export const MODELS = [
-  { id: "gpt-4o", label: "GPT-4o", initial: "G", bg: "#111112" },
-  { id: "gpt-4o-mini", label: "GPT-4o mini", initial: "G", bg: "#111112" },
-  { id: "claude-opus-4-7", label: "Claude Opus 4.7", initial: "C", bg: "#d97757" },
-  { id: "claude-sonnet-4-6", label: "Claude Sonnet 4.6", initial: "C", bg: "#d97757" },
-  { id: "claude-haiku-4-5", label: "Claude Haiku 4.5", initial: "C", bg: "#d97757" },
+export type ModelProvider = "openai" | "anthropic";
+
+export const MODELS: {
+  id: string;
+  label: string;
+  provider: ModelProvider;
+  bg: string;
+}[] = [
+  { id: "gpt-4o", label: "GPT-4o", provider: "openai", bg: "#111112" },
+  { id: "gpt-4o-mini", label: "GPT-4o mini", provider: "openai", bg: "#111112" },
+  { id: "claude-opus-4-7", label: "Claude Opus 4.7", provider: "anthropic", bg: "#d97757" },
+  { id: "claude-sonnet-4-6", label: "Claude Sonnet 4.6", provider: "anthropic", bg: "#d97757" },
+  { id: "claude-haiku-4-5", label: "Claude Haiku 4.5", provider: "anthropic", bg: "#d97757" },
 ];
 
 // --- Scripted demo content (for screen recording) ---

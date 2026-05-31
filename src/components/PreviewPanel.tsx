@@ -98,10 +98,22 @@ function Composer({
   onActivate?: () => void;
   sending: boolean;
 }) {
+  const taRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-grow with the content, capped so it scrolls past a few lines.
+  useEffect(() => {
+    const el = taRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 140)}px`;
+  }, [value]);
+
   return (
-    <div className="flex items-center gap-2 px-4 h-12">
-      <input
+    <div className="flex items-end gap-2 px-4 py-2 min-h-12">
+      <textarea
+        ref={taRef}
         value={value}
+        rows={1}
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => onActivate?.()}
         onKeyDown={(e) => {
@@ -111,12 +123,12 @@ function Composer({
           }
         }}
         placeholder="Message goes here..."
-        className="flex-1 h-8 px-3 text-input-md text-fg-primary bg-bg-card-parent placeholder:text-fg-tertiary"
+        className="flex-1 resize-none py-1.5 px-3 max-h-[140px] leading-snug text-input-md text-fg-primary bg-bg-card-parent placeholder:text-fg-tertiary scrollbar-thin"
       />
       <button
         onClick={onSend}
         disabled={sending || !value.trim()}
-        className={`w-8 h-8 flex items-center justify-center rounded-sm ${
+        className={`shrink-0 w-8 h-8 flex items-center justify-center rounded-sm ${
           sending
             ? "bg-bg-primary-inverse text-white"
             : value.trim()
